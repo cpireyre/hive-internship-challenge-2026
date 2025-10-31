@@ -62,6 +62,7 @@ Upload your work to Google Drive, Dropbox (or some other service), and complete 
 - Your email address
 - Any instructions for your game.
 
+[**SUBMIT**](https://supr.cl/hive2026submit)
 
 ## Troubleshooting
 
