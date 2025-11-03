@@ -34,7 +34,7 @@ bool StatePlaying::init()
     m_pSprite = std::make_unique<sf::Sprite>(*m_skyTextures[0]);
     if (!m_pSprite)
         return false;
-    m_ground.setSize({1024.0f, 356.f});
+    m_ground.setSize({1024.0f, 1024.0f - ZERO_Y});
     m_ground.setPosition({0.0f, ZERO_Y});
     m_ground.setFillColor(sf::Color(0x5C794EFF));
 
