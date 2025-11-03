@@ -35,6 +35,9 @@ bool StatePlaying::init()
     m_helpText = std::make_unique<sf::Text>(*pFont);
     if (!m_helpText)
         return false;
+    m_controlText = std::make_unique<sf::Text>(*pFont);
+    if (!m_controlText)
+        return false;
 
     m_clockText->setString("12:00");
     m_clockText->setCharacterSize(90);
@@ -46,9 +49,21 @@ bool StatePlaying::init()
     m_helpText->setCharacterSize(50);
     m_helpText->setStyle(sf::Text::Bold);
     localBounds = m_helpText->getLocalBounds();
-    m_helpText->setOrigin({localBounds.size.x / 2.f - 700, localBounds.size.y / 1.0f - 200});
+    m_helpText->setOrigin({localBounds.size.x / 2.f - 3000, localBounds.size.y / 1.0f - 200});
+
+    m_controlText->setString("Jump on the red guys with space           Bounce off their heads with space");
+    m_controlText->setCharacterSize(50);
+    m_controlText->setStyle(sf::Text::Bold);
+    localBounds = m_controlText->getLocalBounds();
+    m_controlText->setOrigin({localBounds.size.x / 2.f - 1000, localBounds.size.y / 1.0f - 250});
 
     return true;
+}
+
+void    moveText(sf::Text *p, float dt) {
+    float currentX = p->getPosition().x;
+    float currentY = p->getPosition().y;
+    p->setPosition({currentX - 400 * dt, currentY});
 }
 
 #include <iostream>
@@ -64,9 +79,8 @@ void StatePlaying::update(float dt)
 
     elapsedTime += 10 * dt;
     if (elapsedTime > 10) {
-        float currentX = m_helpText->getPosition().x;
-        float currentY = m_helpText->getPosition().y;
-        m_helpText->setPosition({currentX - 400 * dt, currentY});
+        moveText(m_helpText.get(), dt);
+        moveText(m_controlText.get(), dt);
     }
     m_timeUntilEnemySpawn -= dt;
     constexpr uint32_t size = 4;
@@ -196,6 +210,7 @@ void StatePlaying::render(sf::RenderTarget& target) const
     m_pPlayer->render(target);
     target.draw(*m_clockText);
     target.draw(*m_helpText);
+    target.draw(*m_controlText);
 }
 
 static uint32_t roll(int n) {
