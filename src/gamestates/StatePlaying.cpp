@@ -1,4 +1,5 @@
 #include "StatePlaying.h"
+#include "StateWinScreen.h"
 #include "StatePaused.h"
 #include "StateStack.h"
 #include "ResourceManager.h"
@@ -98,6 +99,7 @@ void    moveText(sf::Text *p, float dt) {
 void StatePlaying::update(float dt)
 {
     char buffer[100];
+    elapsedTime += dt * (10 + 2 * boostTimer);
     int score = elapsedTime;
     const int hour = 12 + score / 60, minute = score % 60;
     snprintf(buffer, sizeof(buffer), "%02d:%02d",
@@ -105,6 +107,8 @@ void StatePlaying::update(float dt)
             minute
             );
     m_clockText->setString(buffer);
+    if (hour >= 24)
+        m_stateStack.push<StateWinScreen>();
 
     if (hour >= 16 && timeOfDayIota == 0) {
         timeOfDayIota++;
@@ -126,7 +130,6 @@ void StatePlaying::update(float dt)
         m_pSprite->setTexture(*m_skyTextures[timeOfDayIota]);
         m_ground.setFillColor(sf::Color(0x141C1AFF));
     }
-    elapsedTime += 10 * dt;
     if (elapsedTime > 10) {
         moveText(m_helpText.get(), dt);
         moveText(m_controlText.get(), dt);
