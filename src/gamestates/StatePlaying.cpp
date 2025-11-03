@@ -15,19 +15,28 @@ StatePlaying::StatePlaying(StateStack& stateStack)
 
 bool StatePlaying::init()
 {
-    const sf::Texture* pTexture = ResourceManager::getOrLoadTexture("1.jpg");
-    if (pTexture == nullptr)
+    m_skyTextures[0] = ResourceManager::getOrLoadTexture("1.jpg"); // daylight
+    if (m_skyTextures[0] == nullptr)
         return false;
-    m_pSprite = std::make_unique<sf::Sprite>(*pTexture);
+    m_skyTextures[1] = ResourceManager::getOrLoadTexture("4.jpg"); // sunset
+    if (m_skyTextures[1] == nullptr)
+        return false;
+    m_skyTextures[2] = ResourceManager::getOrLoadTexture("5.jpg"); // sunset2
+    if (m_skyTextures[2] == nullptr)
+        return false;
+    m_skyTextures[3] = ResourceManager::getOrLoadTexture("2.jpg"); // evening
+    if (m_skyTextures[3] == nullptr)
+        return false;
+    m_skyTextures[4] = ResourceManager::getOrLoadTexture("3.jpg"); // nighttime
+    if (m_skyTextures[4] == nullptr)
+        return false;
+    m_pSprite = std::make_unique<sf::Sprite>(*m_skyTextures[0]);
     if (!m_pSprite)
         return false;
     m_ground.setSize({1024.0f, 356.f});
     m_ground.setPosition({0.0f, ZERO_Y});
-    m_ground.setFillColor(sf::Color::Green);
+    m_ground.setFillColor(sf::Color(0x5C794EFF));
 
-    m_sky.setSize({1024.0f, 1024.f});
-    m_sky.setPosition({0.0f, 0});
-    m_sky.setFillColor(sf::Color::Blue);
 
     m_pPlayer = std::make_unique<Player>();
     if (!m_pPlayer || !m_pPlayer->init())
@@ -81,12 +90,33 @@ void StatePlaying::update(float dt)
 {
     char buffer[100];
     int score = elapsedTime;
+    const int hour = 12 + score / 60, minute = score % 60;
     snprintf(buffer, sizeof(buffer), "%02d:%02d",
-            12 + (score / 60),
-            (score % 60)
+            hour,
+            minute
             );
     m_clockText->setString(buffer);
 
+    if (hour >= 16 && timeOfDayIota == 0) {
+        timeOfDayIota++;
+        m_pSprite->setTexture(*m_skyTextures[timeOfDayIota]);
+        m_ground.setFillColor(sf::Color(0x795D4EFF));
+    }
+    if (hour >= 18 && timeOfDayIota == 1) {
+        timeOfDayIota++;
+        m_pSprite->setTexture(*m_skyTextures[timeOfDayIota]);
+        m_ground.setFillColor(sf::Color(0x453D3FFF));
+    }
+    if (hour >= 20 && timeOfDayIota == 2) {
+        timeOfDayIota++;
+        m_pSprite->setTexture(*m_skyTextures[timeOfDayIota]);
+        m_ground.setFillColor(sf::Color(0x2E343AFF));
+    }
+    if (hour >= 22 && timeOfDayIota == 3) {
+        timeOfDayIota++;
+        m_pSprite->setTexture(*m_skyTextures[timeOfDayIota]);
+        m_ground.setFillColor(sf::Color(0x141C1AFF));
+    }
     elapsedTime += 10 * dt;
     if (elapsedTime > 10) {
         moveText(m_helpText.get(), dt);

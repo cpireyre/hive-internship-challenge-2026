@@ -1,5 +1,4 @@
 #pragma once
-
 #include <cmath>
 #include "Constants.h"
 #include "IState.h"
@@ -23,7 +22,7 @@ public:
     std::unique_ptr<sf::Text> m_clockText;
     std::unique_ptr<sf::Text> m_helpText;
     std::unique_ptr<sf::Text> m_controlText;
-    std::unique_ptr<sf::Texture> sky1;
+    const sf::Texture* m_skyTextures[5];
     std::unique_ptr<sf::Sprite> m_pSprite;
 
 private:
@@ -42,6 +41,7 @@ private:
     bool boostEntitySpeed = false;
     float boostTimer = 0;
     float elapsedTime = 0;
+    int timeOfDayIota = 0;
 
     void updateCollisions();
 };
