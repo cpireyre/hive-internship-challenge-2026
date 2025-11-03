@@ -48,13 +48,11 @@ void StatePlaying::update(float dt)
     m_timeUntilPowerupSpawn -= dt;
     if (m_timeUntilPowerupSpawn < 0.0f)
     {
-        std::cout << "time to spawn powerup\n";
         m_timeUntilPowerupSpawn = powerupSpawnInterval + powerupIntervalOffset[roll(size)];
         std::unique_ptr<Powerup> pPowerup = std::make_unique<Powerup>();
         pPowerup->setPosition(sf::Vector2f(1000, ZERO_Y));
         if (pPowerup->init())
         {
-        std::cout << "spawned powerup\n";
             m_powerups.push_back(std::move(pPowerup));
         }
     }
@@ -83,7 +81,6 @@ void StatePlaying::update(float dt)
     bool playerDied = false;
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
     {
-        if (m_pPlayer->m_iFrameTimer > 0) continue;
         const sf::Vector2f c = m_pPlayer->getPosition();
         sf::Vector2 pos = pEnemy->m_pSprite->getGlobalBounds().position;
         sf::Vector2 size = pEnemy->m_pSprite->getGlobalBounds().size;
@@ -136,7 +133,6 @@ void StatePlaying::update(float dt)
         float hitbox = 25;
         if (distance <= hitbox) {
             pPowerup->active = false;
-            m_pPlayer->m_iFrameTimer += 100;
         }
     }
     // End Playing State on player death

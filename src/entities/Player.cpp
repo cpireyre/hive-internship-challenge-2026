@@ -34,8 +34,6 @@ void Player::update(float dt)
 {
     constexpr float gravity = 4000.f;
     constexpr float velocity = 1300.f;
-    if (m_iFrameTimer > 0) m_iFrameTimer -= dt;
-    if (m_iFrameTimer < 0) m_iFrameTimer = 0;
     if (m_position.y >= ZERO_Y && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
     {
         m_acceleration.y = gravity;

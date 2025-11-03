@@ -21,5 +21,4 @@ public:
     void render(sf::RenderTarget& target) const override;
 
     bool m_isJumping = false;
-    float m_iFrameTimer = 0.f;
 };
