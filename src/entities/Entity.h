@@ -30,6 +30,7 @@ public:
 protected:
     sf::Vector2f m_position;
     sf::Vector2f m_velocity;
+    sf::Vector2f m_acceleration;
     sf::Angle m_rotation;
     float m_collisionRadius = 0.0f;
     std::unique_ptr<sf::Sprite> m_pSprite;

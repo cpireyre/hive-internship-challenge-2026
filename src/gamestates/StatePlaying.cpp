@@ -58,9 +58,9 @@ void StatePlaying::update(float dt)
     bool playerDied = false;
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
     {
-        float distance = (m_pPlayer->getPosition() - pEnemy->getPosition()).lengthSquared();
-        float minDistance = std::pow(Player::collisionRadius + pEnemy->getCollisionRadius(), 2.0f);
         const sf::Vector2f playerPosition = m_pPlayer->getPosition();
+        float distance = (playerPosition - pEnemy->getPosition()).lengthSquared();
+        float minDistance = std::pow(Player::collisionRadius + pEnemy->getCollisionRadius(), 1.5f);
 
         if (distance <= minDistance)
         {
