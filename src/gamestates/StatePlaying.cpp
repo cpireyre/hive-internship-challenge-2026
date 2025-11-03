@@ -26,6 +26,7 @@ bool StatePlaying::init()
     return true;
 }
 
+#include <iostream>
 void StatePlaying::update(float dt)
 {
     m_timeUntilEnemySpawn -= dt;
@@ -55,15 +56,31 @@ void StatePlaying::update(float dt)
     }
 
     // Detect collisions
+    // Ref: https://www.jeffreythompson.org/collision-detection/circle-rect.php
     bool playerDied = false;
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
     {
-        const sf::Vector2f playerPosition = m_pPlayer->getPosition();
-        float distance = (playerPosition - pEnemy->getPosition()).lengthSquared();
-        float minDistance = std::pow(Player::collisionRadius + pEnemy->getCollisionRadius(), 1.5f);
+        const sf::Vector2f c = m_pPlayer->getPosition();
+        sf::Vector2 pos = pEnemy->getPosition();
+        sf::Vector2 size = pEnemy->m_pSprite->getLocalBounds().size;
+        float testX = c.x;
+        float testY = c.y;
+        if (c.x < pos.x) testX = pos.x;
+        else if (c.x > pos.x + size.x) testX = pos.x + size.x;
+        if (c.y < pos.y) testY = pos.y;
+        else if (c.y > pos.y + size.y) testY = pos.y + size.y;
+        float distX = std::pow(c.x - testX, 2);
+        float distY = std::pow(c.y - testY, 2);
+        float distance = sqrt(distX + distY);
+        printf("distX, distY, dist: [%f, %f, %f]\n", distX, distY, distance);
 
-        if (distance <= minDistance)
+        float hitbox = m_pPlayer->getCollisionRadius() + pEnemy->getCollisionRadius();
+        if (distance <= hitbox)
         {
+            printf("Enemy: [%f, %f]\n", pos.x, pos.y);
+            printf("Player: [%f, %f]\n", c.x, c.y);
+            printf("distance: %f\n", distance);
+            printf("Radius: %f\n", m_pPlayer->getCollisionRadius());
             playerDied = true;
             break;
         }

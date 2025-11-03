@@ -1,3 +1,7 @@
 * improve collision (good enough at least)
-fix jump function
+* fix jump function
 fix crash on exit?
+add acceleration to enemies, but must be global
+give enemies different heights but must be calibrated
+* more frequent enemies
+* better collisions again

@@ -27,7 +27,6 @@ public:
     int getHealth() const { return m_health; }
     void setHealth(int health) { m_health = health; }
 
-protected:
     sf::Vector2f m_position;
     sf::Vector2f m_velocity;
     sf::Vector2f m_acceleration;

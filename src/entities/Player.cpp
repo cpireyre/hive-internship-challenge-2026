@@ -23,7 +23,7 @@ bool Player::init()
     m_pSprite->setOrigin({localBounds.size.x / 2.0f, localBounds.size.y / 2.0f});
     m_pSprite->setPosition(m_position);
     m_pSprite->setScale(sf::Vector2f(3.0f, 3.0f));
-    m_collisionRadius = collisionRadius;
+    m_collisionRadius = 12;
 
     return true;
 }
@@ -32,7 +32,7 @@ bool Player::init()
 void Player::update(float dt)
 {
     constexpr float gravity = 4000.f;
-    constexpr float velocity = 1000.f;
+    constexpr float velocity = 1300.f;
     if (m_position.y >= 800 && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
     {
         m_acceleration.y = gravity;

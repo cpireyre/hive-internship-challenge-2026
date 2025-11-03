@@ -20,7 +20,7 @@ public:
     void render(sf::RenderTarget& target) const override;
 
 private:
-    static constexpr const float enemySpawnInterval = 2.0f;
+    static constexpr const float enemySpawnInterval = 1.0f;
     float m_timeUntilEnemySpawn = enemySpawnInterval;
 
     StateStack& m_stateStack;

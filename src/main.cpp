@@ -12,6 +12,7 @@
 int main(int argc, char* argv[])
 {
     (void)argc;
+    srand(time(NULL));
 
     // ResourceManager must be instantiated here -- DO NOT CHANGE
     ResourceManager::init(argv[0]);
