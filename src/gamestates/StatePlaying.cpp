@@ -25,12 +25,34 @@ bool StatePlaying::init()
 
     m_pPlayer->setPosition(sf::Vector2f(ZERO_X, ZERO_Y));
 
+    const sf::Font* pFont = ResourceManager::getOrLoadFont("Lavigne.ttf");
+    if (pFont == nullptr)
+        return false;
+
+    m_clockText = std::make_unique<sf::Text>(*pFont);
+    if (!m_clockText)
+        return false;
+
+    m_clockText->setString("12:00");
+    m_clockText->setCharacterSize(80);
+    m_clockText->setStyle(sf::Text::Bold);
+    sf::FloatRect localBounds = m_clockText->getLocalBounds();
+    m_clockText->setOrigin({localBounds.size.x / 120.0f - 10, localBounds.size.y / 120.0f - 10});
     return true;
 }
 
 #include <iostream>
 void StatePlaying::update(float dt)
 {
+    char buffer[100];
+    int score = elapsedTime;
+    snprintf(buffer, sizeof(buffer), "%02d:%02d",
+            12 + (score / 60),
+            (score % 60)
+            );
+    m_clockText->setString(buffer);
+
+    elapsedTime += 10 * dt;
     m_timeUntilEnemySpawn -= dt;
     constexpr uint32_t size = 4;
     constexpr float intervals[size] = {0.f, -.5f, 1.f, .25f};
@@ -157,6 +179,7 @@ void StatePlaying::render(sf::RenderTarget& target) const
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
         pEnemy->render(target);
     m_pPlayer->render(target);
+    target.draw(*m_clockText);
 }
 
 static uint32_t roll(int n) {

@@ -20,6 +20,7 @@ public:
     bool init() override;
     void update(float dt) override;
     void render(sf::RenderTarget& target) const override;
+    std::unique_ptr<sf::Text> m_clockText;
 
 private:
     static constexpr const float enemySpawnInterval = 1.0f;
@@ -35,6 +36,7 @@ private:
     bool m_hasPauseKeyBeenReleased = true;
     bool boostEntitySpeed = false;
     float boostTimer = 0;
+    float elapsedTime = 0;
 
     void updateCollisions();
 };
