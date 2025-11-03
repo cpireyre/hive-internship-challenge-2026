@@ -6,6 +6,8 @@
 #include <iostream>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+static uint32_t roll(int n);
+
 StatePlaying::StatePlaying(StateStack& stateStack)
     : m_stateStack(stateStack)
 {
@@ -13,15 +15,15 @@ StatePlaying::StatePlaying(StateStack& stateStack)
 
 bool StatePlaying::init()
 {
-    m_ground.setSize({1024.0f, 256.0f});
-    m_ground.setPosition({0.0f, 800.0f});
+    m_ground.setSize({1024.0f, 1024/3.});
+    m_ground.setPosition({0.0f, ZERO_Y});
     m_ground.setFillColor(sf::Color::Green);
 
     m_pPlayer = std::make_unique<Player>();
     if (!m_pPlayer || !m_pPlayer->init())
         return false;
 
-    m_pPlayer->setPosition(sf::Vector2f(200, 800));
+    m_pPlayer->setPosition(sf::Vector2f(ZERO_X, ZERO_Y));
 
     return true;
 }
@@ -30,12 +32,13 @@ bool StatePlaying::init()
 void StatePlaying::update(float dt)
 {
     m_timeUntilEnemySpawn -= dt;
+    constexpr float intervals[4] = {0.f, -.5f, 1.f, .25f};
 
     if (m_timeUntilEnemySpawn < 0.0f)
     {
-        m_timeUntilEnemySpawn = enemySpawnInterval;
+        m_timeUntilEnemySpawn = enemySpawnInterval - intervals[roll(4)];
         std::unique_ptr<Enemy> pEnemy = std::make_unique<Enemy>();
-        pEnemy->setPosition(sf::Vector2f(1000, 800));
+        pEnemy->setPosition(sf::Vector2f(1000, ZERO_Y));
         if (pEnemy->init())
             m_enemies.push_back(std::move(pEnemy));
     }
@@ -73,6 +76,7 @@ void StatePlaying::update(float dt)
         float distY = std::pow(c.y - testY, 2);
         float distance = sqrt(distX + distY);
 
+        // Should use getCollisionRadius or something
         float hitbox = 20;
         if (distance <= hitbox && c.y < pos.y) {
             m_pPlayer->m_acceleration.y = 4000.f;
@@ -80,11 +84,6 @@ void StatePlaying::update(float dt)
         }
         else if (distance <= hitbox)
         {
-            printf("Collision report\n\n");
-            printf("distX, distY, dist: [%f, %f, %f]\n", distX, distY, distance);
-            printf("Enemy: [%f, %f]\n", pos.x, pos.y);
-            printf("Player: [%f, %f]\n", c.x, c.y);
-            printf("distance: %f\n", distance);
             playerDied = true;
         }
     }
@@ -100,4 +99,8 @@ void StatePlaying::render(sf::RenderTarget& target) const
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
         pEnemy->render(target);
     m_pPlayer->render(target);
+}
+
+static uint32_t roll(int n) {
+    return rand() % n;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include "Constants.h"
 #include "IState.h"
 #include "entities/Player.h"
 #include "entities/Enemy.h"

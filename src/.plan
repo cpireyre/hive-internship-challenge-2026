@@ -1,7 +1,14 @@
 * improve collision (good enough at least)
 * fix jump function
-fix crash on exit?
-add acceleration to enemies, but must be global
-give enemies different heights but must be calibrated
+~ fix crash on exit?
 * more frequent enemies
 * better collisions again
+* bounce
+* up playing field
+
+pop enemies
+bg shader
+on screen tutorial
+feature: non-constant enemy spawning
+feature: add acceleration to enemies, but must be global
+feature: give enemies different heights but must be calibrated

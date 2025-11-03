@@ -1,13 +1,15 @@
 #include "Enemy.h"
 #include "ResourceManager.h"
+#include "Constants.h"
 #include <cmath>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
+static uint32_t roll(int n);
+
 bool Enemy::init()
 {
     const sf::Texture* pTexture = ResourceManager::getOrLoadTexture("enemy.png");
-    constexpr float height[3] = {0, 100, 200};
     if (pTexture == nullptr)
         return false;
 
@@ -15,13 +17,14 @@ bool Enemy::init()
     if (!m_pSprite)
         return false;
 
+    constexpr float height[3] = {0, 100, 200};
+    m_position.y = ZERO_Y - height[roll(3)];
     sf::FloatRect localBounds = m_pSprite->getLocalBounds();
     m_pSprite->setOrigin({localBounds.size.x / 2.0f, localBounds.size.y / 2.0f});
     m_pSprite->setPosition(m_position);
     m_pSprite->setScale(sf::Vector2f(4.5f, 4.5f));
     m_collisionRadius = collisionRadius;
     m_velocity.x = 400.0f;
-    m_position.y = 800 - (height[rand() % 3]);
     m_acceleration.x = 0.f;
 
     return true;
@@ -38,4 +41,8 @@ void Enemy::render(sf::RenderTarget& target) const
 {
     m_pSprite->setPosition(m_position);
     target.draw(*m_pSprite);
+}
+
+static uint32_t roll(int n) {
+    return rand() % n;
 }

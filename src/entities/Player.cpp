@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "ResourceManager.h"
+#include "Constants.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <cmath>
@@ -33,15 +34,15 @@ void Player::update(float dt)
 {
     constexpr float gravity = 4000.f;
     constexpr float velocity = 1300.f;
-    if (m_position.y >= 800 && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+    if (m_position.y >= ZERO_Y && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
     {
         m_acceleration.y = gravity;
         m_velocity.y = velocity;
     }
     m_position.y -= m_velocity.y * dt;
     m_velocity.y -= m_acceleration.y * dt;
-    if (m_position.y > 800) {
-        m_position.y = 800;
+    if (m_position.y > ZERO_Y) {
+        m_position.y = ZERO_Y;
         m_velocity.y = 0;
     }
 }
