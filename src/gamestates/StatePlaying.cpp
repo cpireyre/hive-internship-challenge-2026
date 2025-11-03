@@ -100,9 +100,10 @@ void StatePlaying::update(float dt)
         float distY = std::pow(c.y - testY, 2);
         float distance = sqrt(distX + distY);
 
-        // Should use getCollisionRadius or something
+        // Should use getCollisionRadius maybe
         float hitbox = 20;
         if (distance <= hitbox && c.y < pos.y) {
+            pEnemy->active = false;
             m_pPlayer->m_acceleration.y = 4000.f;
             m_pPlayer->m_velocity.y = 600.f;
             bool isSpaceKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);

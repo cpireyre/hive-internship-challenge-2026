@@ -34,4 +34,5 @@ public:
     float m_collisionRadius = 0.0f;
     std::unique_ptr<sf::Sprite> m_pSprite;
     int m_health = 0;
+    bool active = true;
 };

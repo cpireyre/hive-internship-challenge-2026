@@ -47,7 +47,7 @@ void Enemy::update(float dt, bool boostEntitySpeed)
 void Enemy::render(sf::RenderTarget& target) const
 {
     m_pSprite->setPosition(m_position);
-    target.draw(*m_pSprite);
+    if (active) target.draw(*m_pSprite);
 }
 
 static uint32_t roll(int n) {
