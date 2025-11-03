@@ -17,8 +17,9 @@ bool Enemy::init()
     if (!m_pSprite)
         return false;
 
-    constexpr float height[3] = {0, 100, 200};
-    m_position.y = ZERO_Y - height[roll(3)];
+    constexpr uint32_t size = 5;
+    constexpr float height[size] = {-5, 0, 10, 70, 270};
+    m_position.y = ZERO_Y - height[roll(size)];
     sf::FloatRect localBounds = m_pSprite->getLocalBounds();
     m_pSprite->setOrigin({localBounds.size.x / 2.0f, localBounds.size.y / 2.0f});
     m_pSprite->setPosition(m_position);

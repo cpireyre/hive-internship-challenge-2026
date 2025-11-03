@@ -32,11 +32,12 @@ bool StatePlaying::init()
 void StatePlaying::update(float dt)
 {
     m_timeUntilEnemySpawn -= dt;
-    constexpr float intervals[4] = {0.f, -.5f, 1.f, .25f};
+    constexpr uint32_t size = 4;
+    constexpr float intervals[size] = {0.f, -.5f, 1.f, .25f};
 
     if (m_timeUntilEnemySpawn < 0.0f)
     {
-        m_timeUntilEnemySpawn = enemySpawnInterval - intervals[roll(4)];
+        m_timeUntilEnemySpawn = enemySpawnInterval + intervals[roll(size)];
         std::unique_ptr<Enemy> pEnemy = std::make_unique<Enemy>();
         pEnemy->setPosition(sf::Vector2f(1000, ZERO_Y));
         if (pEnemy->init())
