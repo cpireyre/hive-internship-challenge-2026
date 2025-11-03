@@ -57,6 +57,9 @@ bool StatePlaying::init()
     m_controlText = std::make_unique<sf::Text>(*pFont);
     if (!m_controlText)
         return false;
+    m_powerupText = std::make_unique<sf::Text>(*pFont);
+    if (!m_powerupText)
+        return false;
 
     m_clockText->setString("12:00");
     m_clockText->setCharacterSize(90);
@@ -75,6 +78,12 @@ bool StatePlaying::init()
     m_controlText->setStyle(sf::Text::Bold);
     localBounds = m_controlText->getLocalBounds();
     m_controlText->setOrigin({localBounds.size.x / 2.f - 1000, localBounds.size.y / 1.0f - 250});
+
+    m_powerupText->setString("Collect yellow things to become invulnerable and go brr");
+    m_powerupText->setCharacterSize(50);
+    m_powerupText->setStyle(sf::Text::Bold);
+    localBounds = m_powerupText->getLocalBounds();
+    m_powerupText->setOrigin({localBounds.size.x / 2.f - 5000, localBounds.size.y / 1.0f - 250});
 
     return true;
 }
@@ -121,6 +130,7 @@ void StatePlaying::update(float dt)
     if (elapsedTime > 10) {
         moveText(m_helpText.get(), dt);
         moveText(m_controlText.get(), dt);
+        moveText(m_powerupText.get(), dt);
     }
     m_timeUntilEnemySpawn -= dt;
     constexpr uint32_t size = 4;
@@ -247,6 +257,7 @@ void StatePlaying::render(sf::RenderTarget& target) const
     target.draw(*m_clockText);
     target.draw(*m_helpText);
     target.draw(*m_controlText);
+    target.draw(*m_powerupText);
     for (const std::unique_ptr<Powerup>& pPowerup : m_powerups)
         pPowerup->render(target);
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)

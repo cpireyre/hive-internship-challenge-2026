@@ -22,6 +22,7 @@ public:
     std::unique_ptr<sf::Text> m_clockText;
     std::unique_ptr<sf::Text> m_helpText;
     std::unique_ptr<sf::Text> m_controlText;
+    std::unique_ptr<sf::Text> m_powerupText;
     const sf::Texture* m_skyTextures[5];
     std::unique_ptr<sf::Sprite> m_pSprite;
 
