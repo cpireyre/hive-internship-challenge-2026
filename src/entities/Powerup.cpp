@@ -7,8 +7,6 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 static uint32_t roll(int n);
-static int64_t	now_ms(void);
-
 bool Powerup::init()
 {
     const sf::Texture* pTexture = ResourceManager::getOrLoadTexture("some_yellow_thing.png");
@@ -36,6 +34,14 @@ bool Powerup::init()
 void Powerup::update(float dt)
 {
     m_position.x -= m_velocity.x * dt;
+    m_velocity.x -= m_acceleration.x * dt;
+}
+
+void Powerup::update(float dt, bool boostEntitySpeed)
+{
+    constexpr float boost = 450;
+    m_position.x -= dt * (m_velocity.x + boost * boostEntitySpeed);
+    m_velocity.x -= m_acceleration.x * dt;
 }
 
 void Powerup::render(sf::RenderTarget& target) const

@@ -38,6 +38,7 @@ void StatePlaying::update(float dt)
     if (m_timeUntilEnemySpawn < 0.0f)
     {
         m_timeUntilEnemySpawn = enemySpawnInterval + intervals[roll(size)];
+        if (boostEntitySpeed) m_timeUntilEnemySpawn /= 2;
         std::unique_ptr<Enemy> pEnemy = std::make_unique<Enemy>();
         pEnemy->setPosition(sf::Vector2f(1000, ZERO_Y));
         if (pEnemy->init())
@@ -69,11 +70,16 @@ void StatePlaying::update(float dt)
 
     for (const std::unique_ptr<Powerup>& pPowerup : m_powerups)
     {
-        pPowerup->update(dt);
+        pPowerup->update(dt, boostEntitySpeed);
     }
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
     {
-        pEnemy->update(dt);
+        pEnemy->update(dt, boostEntitySpeed);
+    }
+    boostTimer -= dt;
+    if (boostTimer <= 0) {
+        boostEntitySpeed = false;
+        boostTimer = 0;
     }
 
     // Detect collisions
@@ -107,7 +113,7 @@ void StatePlaying::update(float dt)
                 m_pPlayer->m_velocity.y = velocity;
             }
         }
-        else if (distance <= hitbox)
+        else if (boostTimer <= 0 && distance <= hitbox)
         {
             playerDied = true;
             break;
@@ -131,8 +137,10 @@ void StatePlaying::update(float dt)
 
         // Should use getCollisionRadius or something
         float hitbox = 25;
-        if (distance <= hitbox) {
+        if (pPowerup->active && distance <= hitbox) {
             pPowerup->active = false;
+            boostEntitySpeed = true;
+            boostTimer = 5;
         }
     }
     // End Playing State on player death

@@ -19,6 +19,7 @@ public:
     
     bool init() override;
     void update(float dt) override;
+    void update(float dt, bool boostEntitySpeed);
     void render(sf::RenderTarget& target) const override;
 };
 

@@ -24,7 +24,7 @@ public:
 private:
     static constexpr const float enemySpawnInterval = 1.0f;
     float m_timeUntilEnemySpawn = enemySpawnInterval;
-    static constexpr const float powerupSpawnInterval = 1.f;
+    static constexpr const float powerupSpawnInterval = 12.f;
     float m_timeUntilPowerupSpawn = powerupSpawnInterval;
 
     StateStack& m_stateStack;
@@ -33,6 +33,8 @@ private:
     std::vector<std::unique_ptr<Powerup>> m_powerups;
     sf::RectangleShape m_ground;
     bool m_hasPauseKeyBeenReleased = true;
+    bool boostEntitySpeed = false;
+    float boostTimer = 0;
 
     void updateCollisions();
 };

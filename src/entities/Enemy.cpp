@@ -33,9 +33,15 @@ bool Enemy::init()
 
 void Enemy::update(float dt)
 {
-    if (m_velocity.x < 1000)
-        m_velocity.x += m_acceleration.x * dt;
     m_position.x -= m_velocity.x * dt;
+    m_velocity.x -= m_acceleration.x * dt;
+}
+
+void Enemy::update(float dt, bool boostEntitySpeed)
+{
+    constexpr float boost = 450;
+    m_position.x -= dt * (m_velocity.x + boost * boostEntitySpeed);
+    m_velocity.x -= m_acceleration.x * dt;
 }
 
 void Enemy::render(sf::RenderTarget& target) const
