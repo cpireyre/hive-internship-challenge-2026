@@ -15,7 +15,7 @@ StatePlaying::StatePlaying(StateStack& stateStack)
 
 bool StatePlaying::init()
 {
-    m_ground.setSize({1024.0f, 1024/3.});
+    m_ground.setSize({1024.0f, 356.f});
     m_ground.setPosition({0.0f, ZERO_Y});
     m_ground.setFillColor(sf::Color::Green);
 
