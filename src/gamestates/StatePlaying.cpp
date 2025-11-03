@@ -61,8 +61,8 @@ void StatePlaying::update(float dt)
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
     {
         const sf::Vector2f c = m_pPlayer->getPosition();
-        sf::Vector2 pos = pEnemy->getPosition();
-        sf::Vector2 size = pEnemy->m_pSprite->getLocalBounds().size;
+        sf::Vector2 pos = pEnemy->m_pSprite->getGlobalBounds().position;
+        sf::Vector2 size = pEnemy->m_pSprite->getGlobalBounds().size;
         float testX = c.x;
         float testY = c.y;
         if (c.x < pos.x) testX = pos.x;
@@ -72,17 +72,20 @@ void StatePlaying::update(float dt)
         float distX = std::pow(c.x - testX, 2);
         float distY = std::pow(c.y - testY, 2);
         float distance = sqrt(distX + distY);
-        printf("distX, distY, dist: [%f, %f, %f]\n", distX, distY, distance);
 
-        float hitbox = m_pPlayer->getCollisionRadius() + pEnemy->getCollisionRadius();
-        if (distance <= hitbox)
+        float hitbox = 20;
+        if (distance <= hitbox && c.y < pos.y) {
+            m_pPlayer->m_acceleration.y = 4000.f;
+            m_pPlayer->m_velocity.y = 600.f;
+        }
+        else if (distance <= hitbox)
         {
+            printf("Collision report\n\n");
+            printf("distX, distY, dist: [%f, %f, %f]\n", distX, distY, distance);
             printf("Enemy: [%f, %f]\n", pos.x, pos.y);
             printf("Player: [%f, %f]\n", c.x, c.y);
             printf("distance: %f\n", distance);
-            printf("Radius: %f\n", m_pPlayer->getCollisionRadius());
             playerDied = true;
-            break;
         }
     }
 
