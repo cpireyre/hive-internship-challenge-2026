@@ -21,6 +21,7 @@ public:
     void update(float dt) override;
     void render(sf::RenderTarget& target) const override;
     std::unique_ptr<sf::Text> m_clockText;
+    std::unique_ptr<sf::Text> m_helpText;
 
 private:
     static constexpr const float enemySpawnInterval = 1.0f;

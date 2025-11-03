@@ -32,12 +32,22 @@ bool StatePlaying::init()
     m_clockText = std::make_unique<sf::Text>(*pFont);
     if (!m_clockText)
         return false;
+    m_helpText = std::make_unique<sf::Text>(*pFont);
+    if (!m_helpText)
+        return false;
 
     m_clockText->setString("12:00");
-    m_clockText->setCharacterSize(80);
+    m_clockText->setCharacterSize(90);
     m_clockText->setStyle(sf::Text::Bold);
     sf::FloatRect localBounds = m_clockText->getLocalBounds();
     m_clockText->setOrigin({localBounds.size.x / 120.0f - 10, localBounds.size.y / 120.0f - 10});
+
+    m_helpText->setString("Survive until midnight!");
+    m_helpText->setCharacterSize(50);
+    m_helpText->setStyle(sf::Text::Bold);
+    localBounds = m_helpText->getLocalBounds();
+    m_helpText->setOrigin({localBounds.size.x / 2.f - 700, localBounds.size.y / 1.0f - 200});
+
     return true;
 }
 
@@ -53,6 +63,11 @@ void StatePlaying::update(float dt)
     m_clockText->setString(buffer);
 
     elapsedTime += 10 * dt;
+    if (elapsedTime > 10) {
+        float currentX = m_helpText->getPosition().x;
+        float currentY = m_helpText->getPosition().y;
+        m_helpText->setPosition({currentX - 400 * dt, currentY});
+    }
     m_timeUntilEnemySpawn -= dt;
     constexpr uint32_t size = 4;
     constexpr float intervals[size] = {0.f, -.5f, 1.f, .25f};
@@ -180,6 +195,7 @@ void StatePlaying::render(sf::RenderTarget& target) const
         pEnemy->render(target);
     m_pPlayer->render(target);
     target.draw(*m_clockText);
+    target.draw(*m_helpText);
 }
 
 static uint32_t roll(int n) {
