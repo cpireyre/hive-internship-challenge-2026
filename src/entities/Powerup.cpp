@@ -1,15 +1,17 @@
-#include "Enemy.h"
+#include "Powerup.h"
 #include "ResourceManager.h"
 #include "Constants.h"
 #include <cmath>
+#include <sys/time.h>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 static uint32_t roll(int n);
+static int64_t	now_ms(void);
 
-bool Enemy::init()
+bool Powerup::init()
 {
-    const sf::Texture* pTexture = ResourceManager::getOrLoadTexture("enemy.png");
+    const sf::Texture* pTexture = ResourceManager::getOrLoadTexture("some_yellow_thing.png");
     if (pTexture == nullptr)
         return false;
 
@@ -17,13 +19,13 @@ bool Enemy::init()
     if (!m_pSprite)
         return false;
 
-    constexpr uint32_t size = 5;
-    constexpr float height[size] = {-5, 0, 10, 70, 220};
+    constexpr uint32_t size = 3;
+    constexpr float height[size] = {20, 70, 290};
     m_position.y = ZERO_Y - height[roll(size)];
     sf::FloatRect localBounds = m_pSprite->getLocalBounds();
     m_pSprite->setOrigin({localBounds.size.x / 2.0f, localBounds.size.y / 2.0f});
     m_pSprite->setPosition(m_position);
-    m_pSprite->setScale(sf::Vector2f(4.5f, 4.5f));
+    m_pSprite->setScale(sf::Vector2f(2.0f, 2.0f));
     m_collisionRadius = collisionRadius;
     m_velocity.x = 400.0f;
     m_acceleration.x = 0.f;
@@ -31,17 +33,17 @@ bool Enemy::init()
     return true;
 }
 
-void Enemy::update(float dt)
+void Powerup::update(float dt)
 {
-    if (m_velocity.x < 1000)
-        m_velocity.x += m_acceleration.x * dt;
     m_position.x -= m_velocity.x * dt;
 }
 
-void Enemy::render(sf::RenderTarget& target) const
+void Powerup::render(sf::RenderTarget& target) const
 {
-    m_pSprite->setPosition(m_position);
-    target.draw(*m_pSprite);
+    if (active) {
+        m_pSprite->setPosition(m_position);
+        target.draw(*m_pSprite);
+    }
 }
 
 static uint32_t roll(int n) {

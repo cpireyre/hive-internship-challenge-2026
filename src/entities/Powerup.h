@@ -8,18 +8,17 @@
 
 namespace sf { class Sprite; }
 
-class Player final : public Entity
+class Powerup final : public Entity
 {
 public:
-    static constexpr float collisionRadius = 42.0f;
+    static constexpr float collisionRadius = 24.0f;
+    bool active = true;
 
-    Player();
-    virtual ~Player() = default;
+    Powerup() = default;
+    virtual ~Powerup() = default;
     
     bool init() override;
     void update(float dt) override;
     void render(sf::RenderTarget& target) const override;
-
-    bool m_isJumping = false;
-    float m_iFrameTimer = 0.f;
 };
+

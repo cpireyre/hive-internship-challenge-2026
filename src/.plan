@@ -5,10 +5,14 @@
 * better collisions again
 * bounce
 * up playing field
+* feature: non-constant enemy spawning
+* feature: give enemies different heights but must be calibrated
+* feature: jump bounce jump
 
+double bounce jump code is complected though
 pop enemies
 bg shader
 on screen tutorial
-feature: non-constant enemy spawning
 feature: add acceleration to enemies, but must be global
-feature: give enemies different heights but must be calibrated
+feature: game stages
+feature: boost powerup
