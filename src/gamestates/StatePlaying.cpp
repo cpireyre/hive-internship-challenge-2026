@@ -15,9 +15,19 @@ StatePlaying::StatePlaying(StateStack& stateStack)
 
 bool StatePlaying::init()
 {
+    const sf::Texture* pTexture = ResourceManager::getOrLoadTexture("1.jpg");
+    if (pTexture == nullptr)
+        return false;
+    m_pSprite = std::make_unique<sf::Sprite>(*pTexture);
+    if (!m_pSprite)
+        return false;
     m_ground.setSize({1024.0f, 356.f});
     m_ground.setPosition({0.0f, ZERO_Y});
     m_ground.setFillColor(sf::Color::Green);
+
+    m_sky.setSize({1024.0f, 1024.f});
+    m_sky.setPosition({0.0f, 0});
+    m_sky.setFillColor(sf::Color::Blue);
 
     m_pPlayer = std::make_unique<Player>();
     if (!m_pPlayer || !m_pPlayer->init())
@@ -202,15 +212,16 @@ void StatePlaying::update(float dt)
 
 void StatePlaying::render(sf::RenderTarget& target) const
 {
+    target.draw(*m_pSprite);
     target.draw(m_ground);
+    target.draw(*m_clockText);
+    target.draw(*m_helpText);
+    target.draw(*m_controlText);
     for (const std::unique_ptr<Powerup>& pPowerup : m_powerups)
         pPowerup->render(target);
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
         pEnemy->render(target);
     m_pPlayer->render(target);
-    target.draw(*m_clockText);
-    target.draw(*m_helpText);
-    target.draw(*m_controlText);
 }
 
 static uint32_t roll(int n) {

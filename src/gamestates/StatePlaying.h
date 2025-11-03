@@ -23,6 +23,8 @@ public:
     std::unique_ptr<sf::Text> m_clockText;
     std::unique_ptr<sf::Text> m_helpText;
     std::unique_ptr<sf::Text> m_controlText;
+    std::unique_ptr<sf::Texture> sky1;
+    std::unique_ptr<sf::Sprite> m_pSprite;
 
 private:
     static constexpr const float enemySpawnInterval = 1.0f;
@@ -35,6 +37,7 @@ private:
     std::vector<std::unique_ptr<Enemy>> m_enemies;
     std::vector<std::unique_ptr<Powerup>> m_powerups;
     sf::RectangleShape m_ground;
+    sf::RectangleShape m_sky;
     bool m_hasPauseKeyBeenReleased = true;
     bool boostEntitySpeed = false;
     float boostTimer = 0;
